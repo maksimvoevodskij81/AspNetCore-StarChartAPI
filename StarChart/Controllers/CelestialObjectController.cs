@@ -28,11 +28,13 @@ namespace StarChart.Controllers
         [HttpGet("{name}")]
         public IActionResult GetByName(string name)
         {
-            var celestialObject = _context.CelestialObjects.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
-            if (celestialObject is null)
+            var celestialObjects = _context.CelestialObjects.Where(x => x.Name == name).ToList();
+            if (!celestialObjects.Any())
                 return NotFound();
-            celestialObject.Satellites = _context.CelestialObjects.Where(x => x.OrbitedObjectId == celestialObject.Id).ToList();
-            return Ok(celestialObject);
+            celestialObjects.ForEach(o => o.Satellites =
+           _context.CelestialObjects.Where(x => x.OrbitedObjectId == o.Id).ToList());
+
+            return Ok(celestialObjects);
         }
         [HttpGet]
         public IActionResult GetAll()
