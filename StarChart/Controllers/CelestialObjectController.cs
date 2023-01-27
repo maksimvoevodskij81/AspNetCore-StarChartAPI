@@ -3,7 +3,7 @@ using StarChart.Data;
 
 namespace StarChart.Controllers
 {
-    [Route("/ApiController")]
+    [Route("ApiController")]
     public class CelestialObjectController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
